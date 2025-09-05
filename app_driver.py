@@ -84,6 +84,16 @@ if uploaded_file is not None:
                     df[col] = pd.to_datetime('1900-01-01') + pd.to_timedelta(df[col], unit='D')
                     df[col] = df[col].dt.time
             
+            # Napraw problematyczne kolumny dla Streamlit
+            problematic_columns = ['Street Num', 'Numer', 'Postal', 'Exception']
+            for col in problematic_columns:
+                if col in df.columns:
+                    try:
+                        # Konwertuj na string, żeby uniknąć błędów konwersji
+                        df[col] = df[col].astype(str)
+                    except Exception as e:
+                        st.warning(f"⚠️ Nie udało się skonwertować kolumny {col}: {str(e)}")
+            
             # Sprawdź czy istnieje kolumna "Driver ID:"
             if 'Driver ID:' in df.columns:
                 # Kalendarz
