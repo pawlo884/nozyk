@@ -272,19 +272,34 @@ if uploaded_file is not None:
                     st.caption(f"Top: {exception_counts.index[0]} ({exception_counts.iloc[0]})")
 
             with col2:
-                # Statystyki City Name - liczenie unikalnych adresów
+                # Statystyki City Name - liczenie unikalnych adresów z datą
                 if 'City Name' in df.columns:
                     # Sprawdź czy wszystkie wymagane kolumny adresowe istnieją
                     address_columns = ['Postal', 'City Name', 'Street Name', 'Street Num']
                     available_address_columns = [col for col in address_columns if col in df.columns]
                     
+                    # Znajdź kolumnę z datą
+                    date_column = None
+                    for col in df.columns:
+                        if col.upper() == 'DATA' or 'date' in col.lower():
+                            date_column = col
+                            break
+                    
                     if len(available_address_columns) >= 2:  # Minimum City Name + jedna inna kolumna adresowa
-                        # Utwórz unikalne kombinacje adresów
-                        if len(available_address_columns) == 4:
-                            # Wszystkie kolumny adresowe dostępne
+                        # Utwórz unikalne kombinacje adresów + data
+                        if date_column and len(available_address_columns) == 4:
+                            # Wszystkie kolumny adresowe + data dostępne
+                            unique_columns = address_columns + [date_column]
+                            unique_addresses = df[unique_columns].drop_duplicates()
+                        elif date_column:
+                            # Tylko dostępne kolumny + data
+                            unique_columns = available_address_columns + [date_column]
+                            unique_addresses = df[unique_columns].drop_duplicates()
+                        elif len(available_address_columns) == 4:
+                            # Wszystkie kolumny adresowe bez daty
                             unique_addresses = df[address_columns].drop_duplicates()
                         else:
-                            # Tylko dostępne kolumny
+                            # Tylko dostępne kolumny bez daty
                             unique_addresses = df[available_address_columns].drop_duplicates()
                         
                         # Policz miasta w unikalnych adresach
@@ -294,7 +309,10 @@ if uploaded_file is not None:
                         
                         st.metric("WROCLAW (unikalne adresy)", wroclaw_count)
                         st.metric("Inne miasta (unikalne adresy)", other_count)
-                        st.caption(f"Łącznie unikalnych adresów: {len(unique_addresses)}")
+                        if date_column:
+                            st.caption(f"Łącznie unikalnych adresów z datą: {len(unique_addresses)}")
+                        else:
+                            st.caption(f"Łącznie unikalnych adresów: {len(unique_addresses)}")
                     else:
                         # Fallback - liczenie bezpośrednio z City Name
                         city_counts = df['City Name'].value_counts()
