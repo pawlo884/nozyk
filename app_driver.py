@@ -49,6 +49,16 @@ def load_excel_file(file):
 
 # Sidebar - ładowanie pliku
 st.sidebar.header("📁 Ładowanie pliku")
+
+# Przycisk do czyszczenia cache'a
+if st.sidebar.button("🗑️ Wyczyść cache", help="Usuń załadowane dane z pamięci"):
+    if 'cached_file_key' in st.session_state:
+        del st.session_state.cached_file_key
+    if 'cached_sheets_data' in st.session_state:
+        del st.session_state.cached_sheets_data
+    st.sidebar.success("✅ Cache wyczyszczony!")
+    st.rerun()
+
 uploaded_file = st.sidebar.file_uploader(
     "Wybierz plik Excel",
     type=None,  # Pozwól na wszystkie typy plików
@@ -62,13 +72,28 @@ if uploaded_file is not None:
     if file_extension not in ['xlsx', 'xls', 'xlsb']:
         st.error(f"❌ Nieobsługiwany format pliku: .{file_extension}. Obsługiwane formaty: .xlsx, .xls, .xlsb")
     else:
-        # Ładowanie danych
-        with st.spinner("Ładowanie pliku..."):
-            sheets_data = load_excel_file(uploaded_file)
+        # Sprawdź czy plik jest już w cache
+        file_key = f"{uploaded_file.name}_{uploaded_file.size}"
+        
+        if 'cached_file_key' not in st.session_state or st.session_state.cached_file_key != file_key:
+            # Ładowanie danych
+            with st.spinner("Ładowanie pliku..."):
+                sheets_data = load_excel_file(uploaded_file)
+            
+            if sheets_data:
+                st.success(f"✅ Plik załadowany pomyślnie! Znaleziono {len(sheets_data)} arkuszy.")
+                # Zapisz w session state
+                st.session_state.cached_file_key = file_key
+                st.session_state.cached_sheets_data = sheets_data
+            else:
+                st.error("❌ Nie udało się załadować pliku.")
+                sheets_data = None
+        else:
+            # Użyj danych z cache
+            sheets_data = st.session_state.cached_sheets_data
+            st.success(f"✅ Plik załadowany z cache! Znaleziono {len(sheets_data)} arkuszy.")
         
         if sheets_data:
-            st.success(f"✅ Plik załadowany pomyślnie! Znaleziono {len(sheets_data)} arkuszy.")
-            
             # Automatycznie wybierz pierwszy arkusz
             first_sheet = list(sheets_data.keys())[0]
             df = sheets_data[first_sheet]
