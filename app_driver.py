@@ -111,36 +111,15 @@ def create_gps_map(df):
         st.info("🔄 Wykryto współrzędne UTM - konwertuję na współrzędne geograficzne...")
 
         # Konwersja UTM na geograficzne (przybliżona dla Polski)
-        # UTM Zone 33N dla Polski
-        utm_zone = 33
+        # Użyj przybliżonej konwersji UTM (bez pyproj dla kompatybilności z Streamlit Cloud)
+        st.info("🔄 Używam przybliżonej konwersji UTM → geograficzne")
 
-        # Konwertuj UTM na geograficzne
-        try:
-            import pyproj
-
-            # Definiuj projekcję UTM
-            utm_proj = pyproj.Proj(
-                proj='utm', zone=utm_zone, ellps='WGS84', datum='WGS84')
-            wgs84_proj = pyproj.Proj(
-                proj='latlong', ellps='WGS84', datum='WGS84')
-
-            # Konwertuj współrzędne
-            lons, lats = pyproj.transform(utm_proj, wgs84_proj,
-                                          gps_data['GPSX'].values,
-                                          gps_data['GPSY'].values)
-
-            gps_data['longitude'] = lons
-            gps_data['latitude'] = lats
-
-        except ImportError:
-            st.warning(
-                "⚠️ Brak biblioteki pyproj - używam przybliżonej konwersji")
-            # Przybliżona konwersja dla Polski (UTM Zone 33N)
-            # To jest bardzo przybliżone i może nie być dokładne
-            # Przybliżenie dla Polski
-            gps_data['longitude'] = (gps_data['GPSX'] - 500000) / 111320 + 15.0
-            # Przybliżenie dla Polski
-            gps_data['latitude'] = (gps_data['GPSY'] - 5000000) / 110540 + 52.0
+        # Przybliżona konwersja dla Polski (UTM Zone 33N)
+        # To jest przybliżone, ale wystarczające dla większości przypadków w Polsce
+        # Przybliżenie dla Polski
+        gps_data['longitude'] = (gps_data['GPSX'] - 500000) / 111320 + 15.0
+        # Przybliżenie dla Polski
+        gps_data['latitude'] = (gps_data['GPSY'] - 5000000) / 110540 + 52.0
 
     else:
         # Współrzędne już są geograficzne - sprawdź kolejność

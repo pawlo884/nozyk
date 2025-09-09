@@ -1,0 +1,185 @@
+
+[     UTC     ] Logs for nozykk.streamlit.app/
+────────────────────────────────────────────────────────────────────────────────────────
+[11:13:01] 🚀 Starting up repository: 'nozyk', branch: 'main', main module: 'app_driver.py'
+[11:13:01] 🐙 Cloning repository...
+[11:13:02] 🐙 Cloning into '/mount/src/nozyk'...
+
+[11:13:02] 🐙 Cloned repository!
+[11:13:02] 🐙 Pulling code changes from Github...
+[11:13:02] 📦 Processing dependencies...
+
+──────────────────────────────────────── uv ───────────────────────────────────────────
+
+Using uv pip install.
+Using Python 3.13.6 environment at /home/adminuser/venv
+Resolved 46 packages in 394ms
+  × Failed to download and build `pyproj==3.6.1`
+  ╰─▶ Build backend failed to determine requirements with `build_wheel()`
+      (exit status: 1)
+
+      [stderr]
+      proj executable not found. Please set the
+      PROJ_DIR variable. For more information see:
+      https://pyproj4.github.io/pyproj/stable/installation.html
+
+Checking if Streamlit is installed
+Installing rich for an improved exception logging
+Using uv pip install.
+Using Python 3.13.6 environment at /home/adminuser/venv
+Resolved 4 packages in 137ms
+Prepared 4 packages in 117ms
+Installed 4 packages in 15ms
+ + markdown-it-py==4.0.0
+ + [2025-09-09 11:13:05.764062] mdurl==0.1.2
+ + pygments==2.19.2
+ + rich==14.1.0
+
+────────────────────────────────────────────────────────────────────────────────────────
+
+
+──────────────────────────────────────── pip ───────────────────────────────────────────
+
+Using standard pip install.
+Collecting altair==5.5.0 (from -r /mount/src/nozyk/requirements.txt (line 1))
+  Downloading altair-5.5.0-py3-none-any.whl.metadata (11 kB)
+Collecting attrs==25.3.0 (from -r /mount/src/nozyk/requirements.txt (line 2))
+  Downloading attrs-25.3.0-py3-none-any.whl.metadata (10 kB)
+Collecting blinker==1.9.0 (from -r /mount/src/nozyk/requirements.txt (line 3))
+  Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting cachetools==6.2.0 (from -r /mount/src/nozyk/requirements.txt (line 4))
+  Downloading cachetools-6.2.0-py3-none-any.whl.metadata (5.4 kB)
+Collecting certifi==2025.8.3 (from -r /mount/src/nozyk/requirements.txt (line 5))
+  Downloading certifi-2025.8.3-py3-none-any.whl.metadata (2.4 kB)
+Collecting charset-normalizer==3.4.3 (from -r /mount/src/nozyk/requirements.txt (line 6))
+  Downloading charset_normalizer-3.4.3-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (36 kB)
+Collecting click==8.2.1 (from -r /mount/src/nozyk/requirements.txt (line 7))
+  Downloading click-8.2.1-py3-none-any.whl.metadata (2.5 kB)
+Collecting colorama==0.4.6 (from -r /mount/src/nozyk/requirements.txt (line 8))
+  Downloading colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+Collecting et_xmlfile==2.0.0 (from -r /mount/src/nozyk/requirements.txt (line 9))
+  Downloading et_xmlfile-2.0.0-py3-none-any.whl.metadata (2.7 kB)
+Collecting gitdb==4.0.12 (from -r /mount/src/nozyk/requirements.txt (line 10))
+  Downloading gitdb-4.0.12-py3-none-any.whl.metadata (1.2 kB)
+Collecting GitPython==3.1.45 (from -r /mount/src/nozyk/requirements.txt (line 11))
+  Downloading gitpython-3.1.45-py3-none-any.whl.metadata (13 kB)
+Collecting idna==3.10 (from -r /mount/src/nozyk/requirements.txt (line 12))
+  Downloading idna-3.10-py3-none-any.whl.metadata (10 kB)
+Collecting Jinja2==3.1.6 (from -r /mount/src/nozyk/requirements.txt (line 13))
+  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting jsonschema==4.25.1 (from -r /mount/src/nozyk/requirements.txt (line 14))
+  Downloading jsonschema-4.25.1-py3-none-any.whl.metadata (7.6 kB)
+Collecting jsonschema-specifications==2025.4.1 (from -r /mount/src/nozyk/requirements.txt (line 15))
+  Downloading jsonschema_specifications-2025.4.1-py3-none-any.whl.metadata (2.9 kB)
+Collecting MarkupSafe==3.0.2 (from -r /mount/src/nozyk/requirements.txt (line 16))
+  Downloading MarkupSafe-3.0.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.0 kB)
+Collecting narwhals==2.3.0 (from -r /mount/src/nozyk/requirements.txt (line 17))
+  Downloading narwhals-2.3.0-py3-none-any.whl.metadata (11 kB)
+Collecting numpy==2.3.2 (from -r /mount/src/nozyk/requirements.txt (line 18))
+  Downloading numpy-2.3.2-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.1/62.1 kB 6.9 MB/s eta 0:00:00[2025-09-09 11:13:09.018334] 
+Collecting openpyxl==3.1.5 (from -r /mount/src/nozyk/requirements.txt (line 19))
+  Downloading openpyxl-3.1.5-py2.py3-none-any.whl.metadata (2.5 kB)
+Collecting packaging==25.0 (from -r /mount/src/nozyk/requirements.txt (line 20))
+  Downloading packaging-25.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting pandas==2.3.2 (from -r /mount/src/nozyk/requirements.txt (line 21))
+  Downloading pandas-2.3.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (91 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.2/91.2 kB 50.5 MB/s eta 0:00:00[2025-09-09 11:13:09.360307] 
+Collecting pillow==11.3.0 (from -r /mount/src/nozyk/requirements.txt (line 22))
+  Downloading pillow-11.3.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.0 kB)
+Collecting protobuf==6.32.0 (from -r /mount/src/nozyk/requirements.txt (line 23))
+  Downloading protobuf-6.32.0-cp39-abi3-manylinux2014_x86_64.whl.metadata (593 bytes)
+Collecting pyarrow==21.0.0 (from -r /mount/src/nozyk/requirements.txt (line 24))
+  Downloading pyarrow-21.0.0-cp313-cp313-manylinux_2_28_x86_64.whl.metadata (3.3 kB)
+Collecting pydeck==0.9.1 (from -r /mount/src/nozyk/requirements.txt (line 25))
+  Downloading pydeck-0.9.1-py2.py3-none-any.whl.metadata (4.1 kB)
+Collecting python-dateutil==2.9.0.post0 (from -r /mount/src/nozyk/requirements.txt (line 26))
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting pytz==2025.2 (from -r /mount/src/nozyk/requirements.txt (line 27))
+  Downloading pytz-2025.2-py2.py3-none-any.whl.metadata (22 kB)
+Collecting pyxlsb==1.0.10 (from -r /mount/src/nozyk/requirements.txt (line 28))
+  Downloading pyxlsb-1.0.10-py2.py3-none-any.whl.metadata (2.5 kB)
+Collecting referencing==0.36.2 (from -r /mount/src/nozyk/requirements.txt (line 29))
+  Downloading referencing-0.36.2-py3-none-any.whl.metadata (2.8 kB)
+Collecting requests==2.32.5 (from -r /mount/src/nozyk/requirements.txt (line 30))
+  Downloading requests-2.32.5-py3-none-any.whl.metadata (4.9 kB)
+Collecting rpds-py==0.27.1 (from -r /mount/src/nozyk/requirements.txt (line 31))
+  Downloading rpds_py-0.27.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.2 kB)
+Collecting six==1.17.0 (from -r /mount/src/nozyk/requirements.txt (line 32))
+  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting smmap==5.0.2 (from -r /mount/src/nozyk/requirements.txt (line 33))
+  Downloading smmap-5.0.2-py3-none-any.whl.metadata (4.3 kB)
+Collecting streamlit==1.49.1 (from -r /mount/src/nozyk/requirements.txt (line 34))
+  Downloading streamlit-1.49.1-py3-none-any.whl.metadata (9.5 kB)
+Collecting streamlit-folium==0.18.0 (from -r /mount/src/nozyk/requirements.txt (line 35))
+  Downloading streamlit_folium-0.18.0-py3-none-any.whl.metadata (416 bytes)
+Collecting pyproj==3.6.1 (from -r /mount/src/nozyk/requirements.txt (line 36))
+  Downloading pyproj-3.6.1.tar.gz (225 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 225.1/225.1 kB 42.2 MB/s eta 0:00:00[2025-09-09 11:13:11.570859] 
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'error'
+  error: subprocess-exited-with-error
+  
+  × Getting requirements to build wheel did not run successfully.
+  │ exit code: 1
+  ╰─> [1 lines of output]
+      proj executable not found. Please set the PROJ_DIR variable. For more information see: https://pyproj4.github.io/pyproj/stable/installation.html
+      [end of output]
+  
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: subprocess-exited-with-error
+
+× Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─> See above for output.
+
+note: This error originates from a subprocess, and is likely not a problem with pip.
+
+[notice] A new release of pip is available: 24.0 -> 25.2
+[notice] To update, run: pip install --upgrade pip
+Checking if Streamlit is installed
+Installing rich for an improved exception logging
+Using standard pip install.
+Collecting rich>=10.14.0
+  Downloading rich-14.1.0-py3-none-any.whl.metadata (18 kB)
+Collecting markdown-it-py>=2.2.0 (from rich>=10.14.0)
+  Downloading markdown_it_py-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+Collecting pygments<3.0.0,>=2.13.0 (from rich>=10.14.0)
+  Downloading pygments-2.19.2-py3-none-any.whl.metadata (2.5 kB)
+Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=10.14.0)
+  Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+Downloading rich-14.1.0-py3-none-any.whl (243 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 243.4/243.4 kB 14.8 MB/s eta 0:00:00[2025-09-09 11:13:19.785165] 
+Downloading markdown_it_py-4.0.0-py3-none-any.whl (87 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.3/87.3 kB 171.8 MB/s eta 0:00:00[2025-09-09 11:13:19.796199] 
+Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 103.1 MB/s eta 0:00:00[2025-09-09 11:13:19.818964] 
+Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+Installing collected packages: pygments, mdurl, markdown-it-py, rich
+  Attempting uninstall: pygments
+    Found existing installation: Pygments 2.19.2
+    Uninstalling Pygments-2.19.2:
+      Successfully uninstalled Pygments-2.19.2
+  Attempting uninstall: mdurl
+    Found existing installation: mdurl 0.1.2
+    Uninstalling mdurl-0.1.2:
+      Successfully uninstalled mdurl-0.1.2
+  Attempting uninstall: markdown-it-py
+    Found existing installation: markdown-it-py 4.0.0
+    Uninstalling markdown-it-py-4.0.0:
+      Successfully uninstalled markdown-it-py-4.0.0
+  Attempting uninstall: rich
+    Found existing installation: rich 14.1.0
+    Uninstalling rich-14.1.0:
+      Successfully uninstalled rich-14.1.0
+Successfully installed markdown-it-py-4.0.0 mdurl-0.1.2 pygments-2.19.2 rich-14.1.0
+
+[notice] A new release of pip is available: 24.0 -> 25.2
+[notice] To update, run: pip install --upgrade pip
+
+────────────────────────────────────────────────────────────────────────────────────────
+
+[11:13:22] ❗️ installer returned a non-zero exit code
+[11:13:22] ❗️ Error during processing dependencies! Please fix the error and push an update, or try restarting the app.
