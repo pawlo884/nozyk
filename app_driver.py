@@ -623,8 +623,8 @@ if uploaded_file is not None:
                 st.empty()  # Pusty placeholder
 
             # Stwórz zakładki
-            tab1, tab2, tab3 = st.tabs(
-                ["📊 Dane", "🗺️ Mapa GPS", "🔍 Wyszukiwanie śladu"])
+            tab1, tab2 = st.tabs(
+                ["📊 Dane", "🔍 Wyszukiwanie śladu"])
 
             with tab1:
                 # Główna zawartość
@@ -808,97 +808,6 @@ if uploaded_file is not None:
                 st.dataframe(df, use_container_width=True)
 
             with tab2:
-                # Mapa GPS
-                st.header("🗺️ Mapa GPS")
-
-                # Sprawdź czy istnieją kolumny GPS
-                if 'GPSX' in df.columns and 'GPSY' in df.columns:
-                    # Sprawdź czy są dane GPS do wyświetlenia
-                    gps_data = df[(df['GPSX'].notna()) & (df['GPSY'].notna()) &
-                                  (df['GPSX'] != '') & (df['GPSY'] != '')]
-
-                    if len(gps_data) > 0:
-                        # Informacje o danych GPS
-                        col1, col2, col3 = st.columns(3)
-                        with col1:
-                            st.metric("Punkty GPS", len(gps_data))
-                        with col2:
-                            st.metric(
-                                "Współrzędne X", f"{gps_data['GPSX'].min():.2f} - {gps_data['GPSX'].max():.2f}")
-                        with col3:
-                            st.metric(
-                                "Współrzędne Y", f"{gps_data['GPSY'].min():.2f} - {gps_data['GPSY'].max():.2f}")
-
-                        # Sprawdź format współrzędnych
-                        sample_x = gps_data['GPSX'].iloc[0]
-                        sample_y = gps_data['GPSY'].iloc[0]
-
-                        if abs(sample_x) > 180 or abs(sample_y) > 90:
-                            st.info(
-                                f"🔍 Wykryto współrzędne UTM (X: {sample_x:.0f}, Y: {sample_y:.0f}) - konwertuję na współrzędne geograficzne")
-                        else:
-                            # Sprawdź kolejność współrzędnych
-                            is_gpsx_lat = (sample_x >= 49 and sample_x <= 55)
-                            is_gpsx_lon = (sample_x >= 14 and sample_x <= 24)
-
-                            if is_gpsx_lat:
-                                st.info(
-                                    f"🔍 Wykryto współrzędne geograficzne - GPSX to szerokość ({sample_x:.6f}), GPSY to długość ({sample_y:.6f})")
-                            elif is_gpsx_lon:
-                                st.info(
-                                    f"🔍 Wykryto współrzędne geograficzne - GPSX to długość ({sample_x:.6f}), GPSY to szerokość ({sample_y:.6f})")
-                            else:
-                                st.info(
-                                    f"🔍 Wykryto współrzędne geograficzne (X: {sample_x:.6f}, Y: {sample_y:.6f}) - sprawdzam kolejność...")
-
-                        # Legenda kolorów
-                        st.markdown("**Legenda kolorów:**")
-                        col1, col2, col3, col4 = st.columns(4)
-                        with col1:
-                            st.markdown("🔴 Czerwony - Inne")
-                        with col2:
-                            st.markdown("🟢 Zielony - DR RELEASED")
-                        with col3:
-                            st.markdown("🔵 Niebieski - COMM INS REL")
-                        with col4:
-                            st.markdown("🟠 Pomarańczowy - SIG OBTAINED")
-
-                        # Inicjalizuj session state dla mapy GPS z unikalnym kluczem dla pliku
-                        gps_map_key = f"gps_map_{file_key}"
-                        gps_loaded_key = f"gps_loaded_{file_key}"
-
-                        if gps_loaded_key not in st.session_state:
-                            st.session_state[gps_loaded_key] = False
-                        if gps_map_key not in st.session_state:
-                            st.session_state[gps_map_key] = None
-
-                        # Automatyczne ładowanie mapy GPS (jak w zakładce wyszukiwania śladu)
-                        with st.spinner("🗺️ Ładowanie mapy GPS..."):
-                            # Sprawdź czy mapa już została załadowana
-                            if not st.session_state[gps_loaded_key] or st.session_state[gps_map_key] is None:
-                                # Utwórz i zapisz mapę w session state
-                                map_obj = create_gps_map(df)
-                                if map_obj:
-                                    st.session_state[gps_map_key] = map_obj
-                                    st.session_state[gps_loaded_key] = True
-                                else:
-                                    st.warning(
-                                        "⚠️ Nie udało się utworzyć mapy")
-                                    st.session_state[gps_loaded_key] = False
-
-                            # Wyświetl mapę jeśli została załadowana
-                            if st.session_state[gps_loaded_key] and st.session_state[gps_map_key]:
-                                st_folium(
-                                    st.session_state[gps_map_key], width=700, height=500)
-                            else:
-                                st.warning(
-                                    "⚠️ Nie udało się utworzyć mapy GPS")
-                    else:
-                        st.warning("⚠️ Brak danych GPS do wyświetlenia")
-                else:
-                    st.warning("⚠️ Brak kolumn GPSX i GPSY w danych")
-
-            with tab3:
                 # Wyszukiwanie śladu GPS
                 st.header("🔍 Wyszukiwanie śladu GPS")
 
@@ -1064,8 +973,7 @@ else:
     - **📅 Wybór dat** - kalendarz z opcjami: wszystkie daty, tylko soboty, niestandardowy wybór (zapamiętuje wybór)
     - **🚗 Wybór Driver ID** - filtrowanie danych według kierowcy z skróconymi nazwami (zapamiętuje wybór)
     - **⚠️ Exception info** - multiselect z zahardkodowanymi wartościami: DR RELEASED, COMM INS REL, SIG OBTAINED
-    - **🗺️ Mapa GPS** - interaktywna mapa z punktami GPS (kolumny GPSX, GPSY) z kolorowym kodowaniem według Exception info
-    - **🔍 Wyszukiwanie śladu** - wyszukiwanie pojedynczego śladu GPS po numerze przesyłki z osobnej mapą
+    - **🔍 Wyszukiwanie śladu** - wyszukiwanie pojedynczego śladu GPS po numerze przesyłki z mapą
     - **📊 Podgląd danych** - wyświetlanie pierwszych 10 wierszy
     - **💾 Eksport** - pobieranie danych w formacie CSV lub Excel
 
@@ -1075,17 +983,14 @@ else:
     3. Wybierz Driver ID z listy rozwijanej - wybór zostanie zapamiętany
     4. Wybierz z zahardkodowanych wartości Exception info: DR RELEASED, COMM INS REL, SIG OBTAINED
     5. Przejrzyj dane w zakładce "Dane"
-    6. Sprawdź mapę GPS w zakładce "Mapa GPS" (ładuje się tylko gdy zakładka jest aktywna)
-    7. Wyszukaj konkretny ślad GPS w zakładce "Wyszukiwanie śladu" po numerze przesyłki
-    8. Eksportuj wyniki w formacie CSV lub Excel
+    6. Wyszukaj konkretny ślad GPS w zakładce "Wyszukiwanie śladu" po numerze przesyłki
+    7. Eksportuj wyniki w formacie CSV lub Excel
 
     ## ✨ Nowe funkcje:
     - **Skrócone nazwy Driver ID** - wyświetlanie tylko znaków 5-8 z nazwy dla lepszej czytelności
     - **Sortowanie** - Driver ID są posortowane numerycznie lub alfabetycznie
     - **Tabela podsumowująca** - pokazuje skróconą nazwę + oryginalną w nawiasach
-    - **🗺️ Mapa GPS** - interaktywna mapa z punktami GPS z kolorowym kodowaniem według Exception info
-    - **📊 Statystyki GPS** - wyświetlanie liczby punktów GPS i zakresu współrzędnych
-    - **🔍 Wyszukiwanie śladu** - wyszukiwanie pojedynczego śladu GPS po numerze przesyłki z dedykowaną mapą
+    - **🔍 Wyszukiwanie śladu** - wyszukiwanie pojedynczego śladu GPS po numerze przesyłki z mapą
     - **📑 Zakładki** - podział na zakładki dla lepszej wydajności i organizacji
     """)
 
