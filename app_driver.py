@@ -636,7 +636,7 @@ if uploaded_file is not None:
 
                     # Podgląd danych
                     st.subheader("Podgląd danych")
-                    st.dataframe(df.head(10), width="100%")
+                    st.dataframe(df.head(10), use_container_width=True)
                 else:
                     st.header("📊 Podsumowanie dla wszystkich kierowców")
 
@@ -732,7 +732,7 @@ if uploaded_file is not None:
 
                         # Wyświetl tabelę podsumowującą
                         st.subheader("📋 Podsumowanie kierowców")
-                        st.dataframe(summary_df, width="100%")
+                        st.dataframe(summary_df, use_container_width=True)
 
                         # Dodaj przycisk eksportu tabeli podsumowującej
                         st.subheader("💾 Eksport podsumowania")
@@ -765,10 +765,10 @@ if uploaded_file is not None:
 
                         st.markdown("---")
                         st.subheader("📊 Szczegółowe dane")
-                        st.dataframe(df.head(10), width="100%")
+                        st.dataframe(df.head(10), use_container_width=True)
                     else:
                         st.header("📊 Wszystkie dane")
-                        st.dataframe(df.head(10), width="100%")
+                        st.dataframe(df.head(10), use_container_width=True)
 
             with col2:
                 st.header("💾 Eksport")
@@ -805,7 +805,7 @@ if uploaded_file is not None:
                 # Wyświetl dane w głównej kolumnie
                 st.markdown("---")
                 st.subheader("📋 Wszystkie dane")
-                st.dataframe(df, width="100%")
+                st.dataframe(df, use_container_width=True)
 
             with tab2:
                 # Mapa GPS
@@ -997,7 +997,7 @@ if uploaded_file is not None:
                                 # Wyświetl tabelę z danymi śladu
                                 st.subheader("📋 Dane śladu")
                                 st.dataframe(gps_tracking_data,
-                                             width="100%")
+                                             use_container_width=True)
 
                                 # Eksport śladu
                                 st.subheader("💾 Eksport śladu")
@@ -1033,7 +1033,7 @@ if uploaded_file is not None:
                                     "⚠️ Brak danych GPS dla tego numeru przesyłki")
                                 st.info("📋 Dostępne dane bez GPS:")
                                 st.dataframe(
-                                    tracking_data, width="100%")
+                                    tracking_data, use_container_width=True)
                         else:
                             st.error(
                                 f"❌ Nie znaleziono żadnych rekordów dla numeru: {tracking_number}")
