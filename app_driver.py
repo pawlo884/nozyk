@@ -853,12 +853,21 @@ if uploaded_file is not None:
                         with col4:
                             st.markdown("🟠 Pomarańczowy - SIG OBTAINED")
 
-                        # Utwórz i wyświetl mapę
-                        map_obj = create_gps_map(df)
-                        if map_obj:
-                            st_folium(map_obj, width=700, height=500)
+                        # Przycisk do ładowania mapy na żądanie
+                        if st.button("🗺️ Załaduj mapę GPS", help="Kliknij aby załadować mapę GPS"):
+                            with st.spinner("🗺️ Ładowanie mapy GPS..."):
+                                # Utwórz i wyświetl mapę
+                                map_obj = create_gps_map(df)
+                                if map_obj:
+                                    st_folium(map_obj, width=700, height=500)
+                                    st.success(
+                                        "✅ Mapa GPS została załadowana!")
+                                else:
+                                    st.warning(
+                                        "⚠️ Nie udało się utworzyć mapy")
                         else:
-                            st.warning("⚠️ Nie udało się utworzyć mapy")
+                            st.info(
+                                "👆 Kliknij przycisk powyżej aby załadować mapę GPS")
                     else:
                         st.warning("⚠️ Brak danych GPS do wyświetlenia")
                 else:
@@ -949,15 +958,23 @@ if uploaded_file is not None:
 
                                 with col2:
                                     st.subheader("🗺️ Mapa śladu")
-                                    # Utwórz mapę dla tego konkretnego śladu
-                                    tracking_map = create_gps_map(
-                                        gps_tracking_data)
-                                    if tracking_map:
-                                        st_folium(tracking_map,
-                                                  width=500, height=400)
+                                    # Przycisk do ładowania mapy śladu na żądanie
+                                    if st.button("🗺️ Załaduj mapę śladu", help="Kliknij aby załadować mapę śladu GPS"):
+                                        with st.spinner("🗺️ Ładowanie mapy śladu GPS..."):
+                                            # Utwórz mapę dla tego konkretnego śladu
+                                            tracking_map = create_gps_map(
+                                                gps_tracking_data)
+                                            if tracking_map:
+                                                st_folium(tracking_map,
+                                                          width=500, height=400)
+                                                st.success(
+                                                    "✅ Mapa śladu została załadowana!")
+                                            else:
+                                                st.warning(
+                                                    "⚠️ Nie udało się utworzyć mapy śladu")
                                     else:
-                                        st.warning(
-                                            "⚠️ Nie udało się utworzyć mapy śladu")
+                                        st.info(
+                                            "👆 Kliknij przycisk powyżej aby załadować mapę śladu")
 
                                 # Wyświetl tabelę z danymi śladu
                                 st.subheader("📋 Dane śladu")
