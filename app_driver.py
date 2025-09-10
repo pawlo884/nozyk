@@ -872,11 +872,16 @@ if uploaded_file is not None:
                         if gps_map_key not in st.session_state:
                             st.session_state[gps_map_key] = None
 
-                        # Przycisk do ładowania mapy na żądanie
+                        # Checkbox do ładowania mapy na żądanie
                         col1, col2 = st.columns(2)
 
                         with col1:
-                            if st.button("🗺️ Załaduj mapę GPS", help="Kliknij aby załadować mapę GPS", key=f"load_gps_{file_key}"):
+                            load_map = st.checkbox("🗺️ Załaduj mapę GPS",
+                                                   help="Zaznacz aby załadować mapę GPS",
+                                                   key=f"load_gps_checkbox_{file_key}",
+                                                   value=st.session_state[gps_loaded_key])
+
+                            if load_map and not st.session_state[gps_loaded_key]:
                                 with st.spinner("🗺️ Ładowanie mapy GPS..."):
                                     # Utwórz i zapisz mapę w session state
                                     map_obj = create_gps_map(df)
@@ -888,6 +893,7 @@ if uploaded_file is not None:
                                     else:
                                         st.warning(
                                             "⚠️ Nie udało się utworzyć mapy")
+                                        st.session_state[gps_loaded_key] = False
 
                         with col2:
                             if st.button("🗑️ Wyczyść mapę GPS", help="Usuń mapę z pamięci", key=f"clear_gps_{file_key}"):
@@ -901,7 +907,7 @@ if uploaded_file is not None:
                                 st.session_state[gps_map_key], width=700, height=500)
                         else:
                             st.info(
-                                "👆 Kliknij przycisk powyżej aby załadować mapę GPS")
+                                "👆 Zaznacz checkbox powyżej aby załadować mapę GPS")
                     else:
                         st.warning("⚠️ Brak danych GPS do wyświetlenia")
                 else:
