@@ -888,14 +888,12 @@ if uploaded_file is not None:
                                     else:
                                         st.warning(
                                             "⚠️ Nie udało się utworzyć mapy")
-                                st.rerun()
 
                         with col2:
                             if st.button("🗑️ Wyczyść mapę GPS", help="Usuń mapę z pamięci", key=f"clear_gps_{file_key}"):
                                 st.session_state[gps_loaded_key] = False
                                 st.session_state[gps_map_key] = None
                                 st.success("✅ Mapa GPS została wyczyszczona!")
-                                st.rerun()
 
                         # Wyświetl mapę jeśli została załadowana
                         if st.session_state[gps_loaded_key] and st.session_state[gps_map_key]:
