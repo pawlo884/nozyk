@@ -766,9 +766,19 @@ if uploaded_file is not None:
                         st.markdown("---")
                         st.subheader("📊 Szczegółowe dane")
                         st.dataframe(df.head(10), use_container_width=True)
+
+                        # Wszystkie dane
+                        st.markdown("---")
+                        st.subheader("📋 Wszystkie dane")
+                        st.dataframe(df, use_container_width=True)
                     else:
                         st.header("📊 Wszystkie dane")
                         st.dataframe(df.head(10), use_container_width=True)
+
+                        # Wszystkie dane
+                        st.markdown("---")
+                        st.subheader("📋 Wszystkie dane")
+                        st.dataframe(df, use_container_width=True)
 
             with col2:
                 st.header("💾 Eksport")
@@ -801,11 +811,6 @@ if uploaded_file is not None:
                     st.info(
                         "💡 Wybierz konkretnego kierowcę, aby eksportować szczegółowe dane")
                     st.info("📋 Użyj przycisków eksportu podsumowania poniżej")
-
-                # Wyświetl dane w głównej kolumnie
-                st.markdown("---")
-                st.subheader("📋 Wszystkie dane")
-                st.dataframe(df, use_container_width=True)
 
             with tab2:
                 # Wyszukiwanie śladu GPS
