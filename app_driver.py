@@ -272,6 +272,10 @@ if st.sidebar.button("🗑️ Wyczyść cache", help="Usuń załadowane dane z p
         del st.session_state.cached_file_key
     if 'cached_sheets_data' in st.session_state:
         del st.session_state.cached_sheets_data
+    if 'gps_map_loaded' in st.session_state:
+        del st.session_state.gps_map_loaded
+    if 'gps_map_object' in st.session_state:
+        del st.session_state.gps_map_object
     st.sidebar.success("✅ Cache wyczyszczony!")
     st.rerun()
 
@@ -853,18 +857,34 @@ if uploaded_file is not None:
                         with col4:
                             st.markdown("🟠 Pomarańczowy - SIG OBTAINED")
 
+                        # Inicjalizuj session state dla mapy GPS
+                        if 'gps_map_loaded' not in st.session_state:
+                            st.session_state.gps_map_loaded = False
+                        if 'gps_map_object' not in st.session_state:
+                            st.session_state.gps_map_object = None
+
                         # Przycisk do ładowania mapy na żądanie
                         if st.button("🗺️ Załaduj mapę GPS", help="Kliknij aby załadować mapę GPS"):
                             with st.spinner("🗺️ Ładowanie mapy GPS..."):
-                                # Utwórz i wyświetl mapę
+                                # Utwórz i zapisz mapę w session state
                                 map_obj = create_gps_map(df)
                                 if map_obj:
-                                    st_folium(map_obj, width=700, height=500)
+                                    st.session_state.gps_map_object = map_obj
+                                    st.session_state.gps_map_loaded = True
                                     st.success(
                                         "✅ Mapa GPS została załadowana!")
                                 else:
                                     st.warning(
                                         "⚠️ Nie udało się utworzyć mapy")
+                        elif st.button("🗑️ Wyczyść mapę GPS", help="Usuń mapę z pamięci"):
+                            st.session_state.gps_map_loaded = False
+                            st.session_state.gps_map_object = None
+                            st.success("✅ Mapa GPS została wyczyszczona!")
+
+                        # Wyświetl mapę jeśli została załadowana
+                        if st.session_state.gps_map_loaded and st.session_state.gps_map_object:
+                            st_folium(st.session_state.gps_map_object,
+                                      width=700, height=500)
                         else:
                             st.info(
                                 "👆 Kliknij przycisk powyżej aby załadować mapę GPS")
@@ -958,23 +978,16 @@ if uploaded_file is not None:
 
                                 with col2:
                                     st.subheader("🗺️ Mapa śladu")
-                                    # Przycisk do ładowania mapy śladu na żądanie
-                                    if st.button("🗺️ Załaduj mapę śladu", help="Kliknij aby załadować mapę śladu GPS"):
-                                        with st.spinner("🗺️ Ładowanie mapy śladu GPS..."):
-                                            # Utwórz mapę dla tego konkretnego śladu
-                                            tracking_map = create_gps_map(
-                                                gps_tracking_data)
-                                            if tracking_map:
-                                                st_folium(tracking_map,
-                                                          width=500, height=400)
-                                                st.success(
-                                                    "✅ Mapa śladu została załadowana!")
-                                            else:
-                                                st.warning(
-                                                    "⚠️ Nie udało się utworzyć mapy śladu")
-                                    else:
-                                        st.info(
-                                            "👆 Kliknij przycisk powyżej aby załadować mapę śladu")
+                                    # Utwórz mapę dla tego konkretnego śladu (automatycznie gdy zakładka jest aktywna)
+                                    with st.spinner("🗺️ Ładowanie mapy śladu GPS..."):
+                                        tracking_map = create_gps_map(
+                                            gps_tracking_data)
+                                        if tracking_map:
+                                            st_folium(tracking_map,
+                                                      width=500, height=400)
+                                        else:
+                                            st.warning(
+                                                "⚠️ Nie udało się utworzyć mapy śladu")
 
                                 # Wyświetl tabelę z danymi śladu
                                 st.subheader("📋 Dane śladu")
