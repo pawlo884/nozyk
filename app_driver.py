@@ -873,22 +873,29 @@ if uploaded_file is not None:
                             st.session_state[gps_map_key] = None
 
                         # Przycisk do ładowania mapy na żądanie
-                        if st.button("🗺️ Załaduj mapę GPS", help="Kliknij aby załadować mapę GPS", key=f"load_gps_{file_key}"):
-                            with st.spinner("🗺️ Ładowanie mapy GPS..."):
-                                # Utwórz i zapisz mapę w session state
-                                map_obj = create_gps_map(df)
-                                if map_obj:
-                                    st.session_state[gps_map_key] = map_obj
-                                    st.session_state[gps_loaded_key] = True
-                                    st.success(
-                                        "✅ Mapa GPS została załadowana!")
-                                else:
-                                    st.warning(
-                                        "⚠️ Nie udało się utworzyć mapy")
-                        elif st.button("🗑️ Wyczyść mapę GPS", help="Usuń mapę z pamięci", key=f"clear_gps_{file_key}"):
-                            st.session_state[gps_loaded_key] = False
-                            st.session_state[gps_map_key] = None
-                            st.success("✅ Mapa GPS została wyczyszczona!")
+                        col1, col2 = st.columns(2)
+
+                        with col1:
+                            if st.button("🗺️ Załaduj mapę GPS", help="Kliknij aby załadować mapę GPS", key=f"load_gps_{file_key}"):
+                                with st.spinner("🗺️ Ładowanie mapy GPS..."):
+                                    # Utwórz i zapisz mapę w session state
+                                    map_obj = create_gps_map(df)
+                                    if map_obj:
+                                        st.session_state[gps_map_key] = map_obj
+                                        st.session_state[gps_loaded_key] = True
+                                        st.success(
+                                            "✅ Mapa GPS została załadowana!")
+                                    else:
+                                        st.warning(
+                                            "⚠️ Nie udało się utworzyć mapy")
+                                st.rerun()
+
+                        with col2:
+                            if st.button("🗑️ Wyczyść mapę GPS", help="Usuń mapę z pamięci", key=f"clear_gps_{file_key}"):
+                                st.session_state[gps_loaded_key] = False
+                                st.session_state[gps_map_key] = None
+                                st.success("✅ Mapa GPS została wyczyszczona!")
+                                st.rerun()
 
                         # Wyświetl mapę jeśli została załadowana
                         if st.session_state[gps_loaded_key] and st.session_state[gps_map_key]:
