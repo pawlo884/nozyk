@@ -636,7 +636,7 @@ if uploaded_file is not None:
 
                     # Podgląd danych
                     st.subheader("Podgląd danych")
-                    st.dataframe(df.head(10), use_container_width=True)
+                    st.dataframe(df.head(10), width="100%")
                 else:
                     st.header("📊 Podsumowanie dla wszystkich kierowców")
 
@@ -732,7 +732,7 @@ if uploaded_file is not None:
 
                         # Wyświetl tabelę podsumowującą
                         st.subheader("📋 Podsumowanie kierowców")
-                        st.dataframe(summary_df, use_container_width=True)
+                        st.dataframe(summary_df, width="100%")
 
                         # Dodaj przycisk eksportu tabeli podsumowującej
                         st.subheader("💾 Eksport podsumowania")
@@ -765,10 +765,10 @@ if uploaded_file is not None:
 
                         st.markdown("---")
                         st.subheader("📊 Szczegółowe dane")
-                        st.dataframe(df.head(10), use_container_width=True)
+                        st.dataframe(df.head(10), width="100%")
                     else:
                         st.header("📊 Wszystkie dane")
-                        st.dataframe(df.head(10), use_container_width=True)
+                        st.dataframe(df.head(10), width="100%")
 
             with col2:
                 st.header("💾 Eksport")
@@ -805,7 +805,7 @@ if uploaded_file is not None:
                 # Wyświetl dane w głównej kolumnie
                 st.markdown("---")
                 st.subheader("📋 Wszystkie dane")
-                st.dataframe(df, use_container_width=True)
+                st.dataframe(df, width="100%")
 
             with tab2:
                 # Mapa GPS
@@ -872,42 +872,27 @@ if uploaded_file is not None:
                         if gps_map_key not in st.session_state:
                             st.session_state[gps_map_key] = None
 
-                        # Checkbox do ładowania mapy na żądanie
-                        col1, col2 = st.columns(2)
+                        # Automatyczne ładowanie mapy GPS (jak w zakładce wyszukiwania śladu)
+                        with st.spinner("🗺️ Ładowanie mapy GPS..."):
+                            # Sprawdź czy mapa już została załadowana
+                            if not st.session_state[gps_loaded_key] or st.session_state[gps_map_key] is None:
+                                # Utwórz i zapisz mapę w session state
+                                map_obj = create_gps_map(df)
+                                if map_obj:
+                                    st.session_state[gps_map_key] = map_obj
+                                    st.session_state[gps_loaded_key] = True
+                                else:
+                                    st.warning(
+                                        "⚠️ Nie udało się utworzyć mapy")
+                                    st.session_state[gps_loaded_key] = False
 
-                        with col1:
-                            load_map = st.checkbox("🗺️ Załaduj mapę GPS",
-                                                   help="Zaznacz aby załadować mapę GPS",
-                                                   key=f"load_gps_checkbox_{file_key}",
-                                                   value=st.session_state[gps_loaded_key])
-
-                            if load_map and not st.session_state[gps_loaded_key]:
-                                with st.spinner("🗺️ Ładowanie mapy GPS..."):
-                                    # Utwórz i zapisz mapę w session state
-                                    map_obj = create_gps_map(df)
-                                    if map_obj:
-                                        st.session_state[gps_map_key] = map_obj
-                                        st.session_state[gps_loaded_key] = True
-                                        st.success(
-                                            "✅ Mapa GPS została załadowana!")
-                                    else:
-                                        st.warning(
-                                            "⚠️ Nie udało się utworzyć mapy")
-                                        st.session_state[gps_loaded_key] = False
-
-                        with col2:
-                            if st.button("🗑️ Wyczyść mapę GPS", help="Usuń mapę z pamięci", key=f"clear_gps_{file_key}"):
-                                st.session_state[gps_loaded_key] = False
-                                st.session_state[gps_map_key] = None
-                                st.success("✅ Mapa GPS została wyczyszczona!")
-
-                        # Wyświetl mapę jeśli została załadowana
-                        if st.session_state[gps_loaded_key] and st.session_state[gps_map_key]:
-                            st_folium(
-                                st.session_state[gps_map_key], width=700, height=500)
-                        else:
-                            st.info(
-                                "👆 Zaznacz checkbox powyżej aby załadować mapę GPS")
+                            # Wyświetl mapę jeśli została załadowana
+                            if st.session_state[gps_loaded_key] and st.session_state[gps_map_key]:
+                                st_folium(
+                                    st.session_state[gps_map_key], width=700, height=500)
+                            else:
+                                st.warning(
+                                    "⚠️ Nie udało się utworzyć mapy GPS")
                     else:
                         st.warning("⚠️ Brak danych GPS do wyświetlenia")
                 else:
@@ -1012,7 +997,7 @@ if uploaded_file is not None:
                                 # Wyświetl tabelę z danymi śladu
                                 st.subheader("📋 Dane śladu")
                                 st.dataframe(gps_tracking_data,
-                                             use_container_width=True)
+                                             width="100%")
 
                                 # Eksport śladu
                                 st.subheader("💾 Eksport śladu")
@@ -1048,7 +1033,7 @@ if uploaded_file is not None:
                                     "⚠️ Brak danych GPS dla tego numeru przesyłki")
                                 st.info("📋 Dostępne dane bez GPS:")
                                 st.dataframe(
-                                    tracking_data, use_container_width=True)
+                                    tracking_data, width="100%")
                         else:
                             st.error(
                                 f"❌ Nie znaleziono żadnych rekordów dla numeru: {tracking_number}")
