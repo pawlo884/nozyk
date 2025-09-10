@@ -272,10 +272,16 @@ if st.sidebar.button("🗑️ Wyczyść cache", help="Usuń załadowane dane z p
         del st.session_state.cached_file_key
     if 'cached_sheets_data' in st.session_state:
         del st.session_state.cached_sheets_data
-    if 'gps_map_loaded' in st.session_state:
-        del st.session_state.gps_map_loaded
-    if 'gps_map_object' in st.session_state:
-        del st.session_state.gps_map_object
+
+    # Wyczyść wszystkie mapy GPS (stare i nowe)
+    keys_to_remove = []
+    for key in st.session_state.keys():
+        if key.startswith('gps_map_') or key.startswith('gps_loaded_'):
+            keys_to_remove.append(key)
+
+    for key in keys_to_remove:
+        del st.session_state[key]
+
     st.sidebar.success("✅ Cache wyczyszczony!")
     st.rerun()
 
@@ -857,34 +863,37 @@ if uploaded_file is not None:
                         with col4:
                             st.markdown("🟠 Pomarańczowy - SIG OBTAINED")
 
-                        # Inicjalizuj session state dla mapy GPS
-                        if 'gps_map_loaded' not in st.session_state:
-                            st.session_state.gps_map_loaded = False
-                        if 'gps_map_object' not in st.session_state:
-                            st.session_state.gps_map_object = None
+                        # Inicjalizuj session state dla mapy GPS z unikalnym kluczem dla pliku
+                        gps_map_key = f"gps_map_{file_key}"
+                        gps_loaded_key = f"gps_loaded_{file_key}"
+
+                        if gps_loaded_key not in st.session_state:
+                            st.session_state[gps_loaded_key] = False
+                        if gps_map_key not in st.session_state:
+                            st.session_state[gps_map_key] = None
 
                         # Przycisk do ładowania mapy na żądanie
-                        if st.button("🗺️ Załaduj mapę GPS", help="Kliknij aby załadować mapę GPS"):
+                        if st.button("🗺️ Załaduj mapę GPS", help="Kliknij aby załadować mapę GPS", key=f"load_gps_{file_key}"):
                             with st.spinner("🗺️ Ładowanie mapy GPS..."):
                                 # Utwórz i zapisz mapę w session state
                                 map_obj = create_gps_map(df)
                                 if map_obj:
-                                    st.session_state.gps_map_object = map_obj
-                                    st.session_state.gps_map_loaded = True
+                                    st.session_state[gps_map_key] = map_obj
+                                    st.session_state[gps_loaded_key] = True
                                     st.success(
                                         "✅ Mapa GPS została załadowana!")
                                 else:
                                     st.warning(
                                         "⚠️ Nie udało się utworzyć mapy")
-                        elif st.button("🗑️ Wyczyść mapę GPS", help="Usuń mapę z pamięci"):
-                            st.session_state.gps_map_loaded = False
-                            st.session_state.gps_map_object = None
+                        elif st.button("🗑️ Wyczyść mapę GPS", help="Usuń mapę z pamięci", key=f"clear_gps_{file_key}"):
+                            st.session_state[gps_loaded_key] = False
+                            st.session_state[gps_map_key] = None
                             st.success("✅ Mapa GPS została wyczyszczona!")
 
                         # Wyświetl mapę jeśli została załadowana
-                        if st.session_state.gps_map_loaded and st.session_state.gps_map_object:
-                            st_folium(st.session_state.gps_map_object,
-                                      width=700, height=500)
+                        if st.session_state[gps_loaded_key] and st.session_state[gps_map_key]:
+                            st_folium(
+                                st.session_state[gps_map_key], width=700, height=500)
                         else:
                             st.info(
                                 "👆 Kliknij przycisk powyżej aby załadować mapę GPS")
